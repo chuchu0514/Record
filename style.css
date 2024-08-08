@@ -30,8 +30,37 @@ footer{
     width: 100%;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) { /*미디어 쿼리@시작 괄호속 조건은 600이하일때 발동한다는 뜻*/
     main {
         padding: 1rem;
     }
+}
+
+#calendar-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#calendar-header {
+    display: flex; /*부모에 플렉스 박고 시작(컨테이너박스)https://studiomeal.com/archives/197*/
+    justify-content: space-between;/*양 끝 배치 남은 건 가운데*/
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#calendar-body{
+    width: 100%;
+    border-collapse: collapse; /*셀 테두리를 하나로 겹치면 두 개니까*/
+}
+
+#calendar-body th, #calendar-body td{
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+#calendar-body .today {
+    background-color: #f0f0f0;
+    font-weight: bold;
 }
