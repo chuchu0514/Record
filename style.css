@@ -1,28 +1,38 @@
-body{
+body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-}
-
-header{
     background-color: #f4f4f4;
-    padding:1rem;
-    text-align: center;
 }
 
-main{
+header {
+    background-color: #333; 
+    padding: 1rem;
+    text-align: center;
+    color: #fff; /* 헤더 텍스트 색상을 흰색으로 변경 */
+}
+
+header h1, header h2 {
+    color: #fff; /* 헤더 내의 h1, h2 텍스트 색상을 흰색으로 변경 */
+}
+
+main {
     padding: 2rem;
     background-color: #f0f0f0;
 }
 
-section{
+section {
     margin-bottom: 2rem;
+    background-color: #fff; 
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-footer{
+footer {
     background-color: #333;
-    color:#fff;
+    color: #fff;
     text-align: center;
     padding: 1rem;
     position: fixed;
@@ -31,7 +41,7 @@ footer{
 }
 
 @media (max-width: 600px) { /*미디어 쿼리@시작 괄호속 조건은 600이하일때 발동한다는 뜻*/
-    main {
+    main { 
         padding: 1rem;
     }
 }
@@ -43,18 +53,18 @@ footer{
 }
 
 #calendar-header {
-    display: flex; /*부모에 플렉스 박고 시작(컨테이너박스)https://studiomeal.com/archives/197*/
+    display: flex;/*부모에 플렉스 박고 시작(컨테이너박스)https://studiomeal.com/archives/197*/
     justify-content: space-between;/*양 끝 배치 남은 건 가운데*/
     align-items: center;
     margin-bottom: 10px;
 }
 
-#calendar-body{
+#calendar-body {
     width: 100%;
     border-collapse: collapse; /*셀 테두리를 하나로 겹치면 두 개니까*/
 }
 
-#calendar-body th, #calendar-body td{
+#calendar-body th, #calendar-body td {
     text-align: center;
     padding: 10px;
     border: 1px solid #ddd;
@@ -63,4 +73,61 @@ footer{
 #calendar-body .today {
     background-color: #f0f0f0;
     font-weight: bold;
+}
+
+
+#timer {
+    text-align: center;
+}
+
+#timer-display {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#start-timer { background-color: #4CAF50; }
+#stop-timer { background-color: #f44336; }
+#reset-timer { background-color: #008CBA; }
+
+h1, h2 {
+    color: #333;
+}
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+body > h2 {
+    color: #333;
+    margin-top: 20px;
+}
+
+body > p {
+    margin: 20px;
+    line-height: 1.6;
 }
