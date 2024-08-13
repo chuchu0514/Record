@@ -8,7 +8,7 @@ body {
 
 header {
     background-color: #333; 
-    padding: 1rem;
+    padding: 1rem; /*폰트하나크기*/ 
     text-align: center;
     color: #fff; /* 헤더 텍스트 색상을 흰색으로 변경 */
 }
@@ -18,7 +18,7 @@ header h1, header h2 {
 }
 
 main {
-    padding: 2rem;
+    padding: 2rem; /*항상 패딩을 줘야 여유가 있음*/
     background-color: #f0f0f0;
 }
 
@@ -27,7 +27,7 @@ section {
     background-color: #fff; 
     padding: 1rem;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /*[수평 오프셋] [수직 오프셋] [흐림 반경] [확산 반경] [색상] 보통 수직을 많이 씀*/
 }
 
 footer {
@@ -43,19 +43,29 @@ footer {
 @media (max-width: 600px) { /*미디어 쿼리@시작 괄호속 조건은 600이하일때 발동한다는 뜻*/
     main { 
         padding: 1rem;
+        font-size: 0.9rem; 
+    }
+    #calendar-container {
+        max-width: 100%; /* 작은 화면에서 전체 너비 사용 */
+    }
+    #timer-display {
+        font-size: 1.5rem; /* 작은 화면에서 타이머 글씨 크기 줄이기 */
+    }
+    button {
+        padding: 8px 16px; /* 버튼 크기 조정 */
     }
 }
 
 #calendar-container {
-    width: 100%;
+    width: 100%; /*max하면 최대 넓이를 제한하는 것*/
     max-width: 400px;
-    margin: 0 auto;
+    margin: 0 auto; /* 좌우가 오토임*/
 }
 
 #calendar-header {
     display: flex;/*부모에 플렉스 박고 시작(컨테이너박스)https://studiomeal.com/archives/197*/
     justify-content: space-between;/*양 끝 배치 남은 건 가운데*/
-    align-items: center;
+    align-items: center; /*세로중앙*/
     margin-bottom: 10px;
 }
 
@@ -71,7 +81,7 @@ footer {
 }
 
 #calendar-body .today {
-    background-color: #f0f0f0;
+    background-color: #e0e8f0;
     font-weight: bold;
 }
 
