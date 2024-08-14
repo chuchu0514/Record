@@ -14,38 +14,43 @@
     </header>
 
     <main>
-        <section id="calendar">
-            <div id="calendar-container">
-                <div id="calendar-header">
-                    <button class="year-button" onclick="changeYear(-1)">&#9664;</button>
-                    <button id="prev-month">이전</button>
-                    <h2 id="current-month-year"></h2>
-                    <button id="next-month">다음</button>
-                    <button class="year-button" onclick="changeYear(1)">&#9654;</button>
+        <div id="calendar-notes-container">
+            <section id="calendar">
+                <div id="calendar-container">
+                    <div id="calendar-header">
+                        <button class="year-button" onclick="changeYear(-1)">&#9664;</button>
+                        <button id="prev-month">이전</button>
+                        <h2 id="current-month-year"></h2>
+                        <button id="next-month">다음</button>
+                        <button class="year-button" onclick="changeYear(1)">&#9654;</button>
+                    </div>
+                    <table id="calendar-body">
+                        <thead>
+                            <tr>
+                                <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
-                <table id="calendar-body">
-                    <thead>
-                        <tr>
-                            <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
+            </section>
+                              
+            <section id="notes">
+                <h2>메모</h2>
+                <textarea id="memo-text" rows="5" placeholder="이 날의 메모를 입력하세요."></textarea>
+                <button id="save-memo">저장</button>
+            </section>
+        </div>
 
         <section id="timer">
             <div id="timer-display">00:00:00</div>
-            <button id="start-timer">시작</button>
-            <button id="stop-timer">정지</button>
-            <button id="reset-timer">초기화</button>
+            <div id="timer-buttons">
+                <button id="start-timer">시작</button>
+                <button id="stop-timer">정지</button>
+                <button id="reset-timer">초기화</button>
+            </div>
         </section>
 
-        <section id="notes">
-            <h2>메모</h2>
-            <textarea id="memo-text" rows="5" placeholder="이 날의 메모를 입력하세요..."></textarea>
-            <button id="save-memo">저장</button>
-        </section>
     </main>
 
     <footer>

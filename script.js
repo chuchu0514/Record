@@ -35,6 +35,18 @@ function updateCalendar(){ //달력 업데이트 함수
                 const cell = document.createElement('td');
                 cell.textContent = date;//날짜적기
                 const cellDate = new Date(year, month, date);// 현재 셀의 날짜를 나타내는 Date 객체 생성
+
+                            // e.s
+                if (year === 514 && month === 4 && date === 14) {
+                    cell.classList.add('easter-egg');
+                    cell.addEventListener('click', (e) => {
+                        e.stopPropagation(); // 이벤트 버블링 방지
+                        window.open('https://youtu.be/sKneO6cBVcU?si=B2wlsJknU-GH3jq_', '_blank');
+                    });
+                    } else {
+                        cell.addEventListener('click', () => selectDate(cellDate));
+                    }
+                    
                 cell.addEventListener('click', () => selectDate(cellDate));// 각 날짜 셀에 클릭 이벤트 리스너 추가
                 // 클릭 시 해당 날짜를 선택하는 selectDate 함수 호출
                 
