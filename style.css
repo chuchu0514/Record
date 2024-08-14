@@ -23,7 +23,7 @@ main {
 }
 
 section {
-    margin-bottom: 2rem;
+    margin-bottom: 2rem;/*섹션간 거리*/
     background-color: #fff; 
     padding: 1rem;
     border-radius: 5px;
@@ -67,7 +67,13 @@ footer {
     justify-content: space-between;/*양 끝 배치 남은 건 가운데*/
     align-items: center; /*세로중앙*/
     margin-bottom: 10px;
+    gap: 10px;
 }
+
+#calendar-header button {
+    margin: 2px; /* 버튼 사이의 간격을 조절 */
+}
+
 
 #calendar-body {
     width: 100%;
@@ -76,15 +82,33 @@ footer {
 
 #calendar-body th, #calendar-body td {
     text-align: center;
-    padding: 10px;
+    vertical-align: middle;
     border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    padding: 10px; /* 셀 내부 여백 추가 */
 }
 
-#calendar-body .today {
+#calendar-body td.today {
     background-color: #e0e8f0;
     font-weight: bold;
 }
 
+#calendar-body td.selected {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#calendar-body td.today.selected {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 0 2px #e0e8f0 inset; /* 테두리 대신 내부 그림자 사용 */
+}
+
+#calendar-body td:hover {
+    background-color: #f0f0f0;
+}
 
 #timer {
     text-align: center;
@@ -95,18 +119,33 @@ footer {
     margin-bottom: 1rem;
 }
 
+.year-button {
+    font-size: 0.8em;
+    padding: 5px 8px;
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.year-button:hover {
+    background-color: #f0f0f0;
+}
+
 button {
     background-color: #4CAF50;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 20px; /*위아래 10px 좌우 20px*/
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline-block; /*인라인 블럭에 대해 알기*/
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 5px; /*모서리 둥글게*/
     transition: background-color 0.3s;
 }
 
@@ -115,8 +154,13 @@ button:hover {
 }
 
 #start-timer { background-color: #4CAF50; }
+#start-timer:hover { background-color: #45a049; }
+
 #stop-timer { background-color: #f44336; }
+#stop-timer:hover { background-color: #da190b; }
+
 #reset-timer { background-color: #008CBA; }
+#reset-timer:hover { background-color: #007a9e; }
 
 h1, h2 {
     color: #333;
@@ -131,8 +175,7 @@ a:hover {
     text-decoration: underline;
 }
 
-
-body > h2 {
+body > h2 { /*body h2와의 차이점*/
     color: #333;
     margin-top: 20px;
 }
@@ -140,4 +183,30 @@ body > h2 {
 body > p {
     margin: 20px;
     line-height: 1.6;
+}
+
+#notes {
+    margin-top: 20px;
+}
+
+#memo-text {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#save-memo {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
 }
