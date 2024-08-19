@@ -4,14 +4,14 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    min-height: 100vh;
+    min-height: 100vh; /*뷰포트 바디가 항상 꽉차게 물론 초과일 순 있음 최소한임 최소한*/
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /*플렉스 자식 세로로 row도 맘에 들긴 함 고민좀*/
 }
 
-header {
+header { 
     background-color: #333; 
-    padding: 1rem;
+    padding: 1rem;/*뭐를 하든 패딩은 기본*/
     text-align: center;
     color: #fff;
 }
@@ -21,13 +21,13 @@ header h1, header h2 {
 }
 
 main {
-    flex: 1;
+    flex: 1; /*부모요소의 남은 공간 다 차지*/
     padding: 2rem;
     background-color: #f0f0f0;
    
 }
 
-section {
+section { /*메인과 묘하게 다른색*/
     background-color: #fff; 
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -38,14 +38,13 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1rem;
-    position: fixed;
     bottom: 0;
-    left: 0;
+    position: fixed; /*이거 해놓으면 width100%해줘야함*/
     width: 100%;
     box-sizing: border-box;
     
 }
-
+/*여기까지공부*/
 /* 달력과 메모 컨테이너 스타일 */
 #calendar-notes-container {
     display: flex;
@@ -249,3 +248,9 @@ a:hover {
     }
 }
 
+.dailyRecord {
+    background-color: gray;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
