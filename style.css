@@ -72,7 +72,8 @@ footer {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    gap: 10px;
+    gap: 10px;  
+    user-select: none; /*텍스트 선택 막기*/
 }
 
 
@@ -88,6 +89,7 @@ footer {
     padding: 10px;
     height: 50px;
     vertical-align: middle; /*크게 필요는 없음 수직 가운데 정렬*/
+    user-select: none; /*텍스트 선택 막기*/
 }
 
 #calendar-body td.today {
@@ -161,6 +163,7 @@ footer {
     font-size: 2rem;
     margin-bottom: 1rem;
     padding-top: 1rem;
+    user-select: none; /*텍스트 선택 막기*/
 }
 
 #timer-buttons {
