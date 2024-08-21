@@ -65,6 +65,7 @@ footer {
     margin: 0 auto;
     padding: 5rem;
     box-sizing: border-box;
+    user-select: none;
 }
 
 #calendar-header {
@@ -162,12 +163,12 @@ footer {
 #timer-display {
     font-size: 2rem;
     margin-bottom: 1rem;
-    padding-top: 1rem;
-    user-select: none; /*텍스트 선택 막기*/
+    padding-top: 1rem; /*타이머 시간을 복사하고 싶을 수 있으니 유저선택을 막지 않음*/
 }
 
 #timer-buttons {
     margin-bottom: 3rem; /* 버튼 아래 여백 더 증가 */
+    user-select: none;
 }
 
 .year-button {
@@ -198,6 +199,7 @@ button {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    user-select: none;
 }
 
 button:hover {

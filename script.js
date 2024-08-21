@@ -1,6 +1,5 @@
-let currentDate = new Date(); //let은 블록스코프변수  new에 관한 설명은 https://velog.io/@gil0127/%EC%83%9D%EC%84%B1%EC%9E%90%EC%99%80-new-%ED%82%A4%EC%9B%8C%EB%93%9C 변경되지 않는 값에는 const 사용, 변경될 수 있는 값에는 let 사용 얘는 사실상 전역스코프임 블록{} 안에 있는 게 아니잖아
+let currentDate = new Date(); //let은 블록스코프변수  new에 관한 설명은 https://velog.io/@gil0127/%EC%83%9D%EC%84%B1%EC%9E%90%EC%99%80-new-%ED%82%A4%EC%9B%8C%EB%93%9C 변경되지 않는 값에는 const 사용, 변경될 수 있는 값에는 let 사용 얘는 사실상 전역스코프임 블록{} 안에 있는 게 아니잖아  //생성자함수가 클래스보다 더 큰 범위 클래스면 생성자함수but 생성자함수라고 클래스는 아님 객체와 인스턴스 이해 
 let selectedDate = new Date(); // 초기값을 현재 날짜로 설정
-let memos = {}; //메모를 저장할 변수
 
 // 달력 기능
 function initCalendar() { //달력 갱신 함수 밑의 두 함수를 포함하고 있음
@@ -45,9 +44,7 @@ function updateCalendar(){ //달력 업데이트 함수
                     });
                     } else {
                         cell.addEventListener('click', () => selectDate(cellDate));
-                    }
-                    
-                cell.addEventListener('click', () => selectDate(cellDate));// 각 날짜 셀에 클릭 이벤트 리스너 추가
+                    }// 각 날짜 셀에 클릭 이벤트 리스너 추가
                 // 클릭 시 해당 날짜를 선택하는 selectDate 함수 호출
                 
                 // 현재 셀의 날짜가 오늘 날짜와 같은지 확인
@@ -88,32 +85,41 @@ function changeYear(delta) {
 function selectDate(date) {
     selectedDate = date;
     updateCalendar();
-    loadMemo();
+    loadMemo();//여기에 로드메모가 있따!
 }
+//
+//
+//
+//
+// 
+let memos = {}; //메모를 저장할 변수  객체는{} 키-값 쌍, 배열은 []-순서 있는 거에 적합 but 객체의 속성에 접근할 땐 []
 
-function loadMemo() {
-    const memoText = document.getElementById('memo-text');
-    const dateString = getDateString(selectedDate);
-    memoText.value = memos[dateString] || '';
-}
-
-function saveMemo() {
-    const memoText = document.getElementById('memo-text').value;
-    const dateString = getDateString(selectedDate);
-    memos[dateString] = memoText;
-    alert('메모가 저장되었습니다.');
-}
-
-function getDateString(date) {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-}
-
-function initNotes() {
+function initNotes() { // 'save-memo' 버튼에 클릭 이벤트 리스너를 추가하여 메모 저장 기능을 초기화
     document.getElementById('save-memo').addEventListener('click', saveMemo);
 }
 
+function loadMemo() {  // 선택된 날짜에 해당하는 메모를 불러와서 텍스트 영역에 표시 셀렉트데이트함수에 있음
+    const memoText = document.getElementById('memo-text');
+    const dateString = getDateString(selectedDate);
+    memoText.value = memos[dateString] || ''; // 메모가 없으면 빈 문자열로 설정 전자가 falsy일 경우 후자를 반환 C언어랑은 다르다 논리연산자가
+}
 
-let timerInterval;  // 타이머의 인터벌을 저장할 변수. setInterval의 반환값을 저장하여 나중에 타이머를 멈출 때 사용
+function saveMemo() { // 텍스트 영역의 내용을 메모로 저장하고 알림을 표시
+    const memoText = document.getElementById('memo-text').value;
+    const dateString = getDateString(selectedDate);
+    memos[dateString] = memoText; // 선택된 날짜에 메모 저장 
+    alert('메모가 저장되었습니다.'); // 저장 완료 알림
+}
+
+function getDateString(date) { // 주어진 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; //String은 문자열을 생성할 때 씀 padstart를 쓰므로 먼저 문자열로 바꿔주기 
+}
+//
+//
+//
+//
+//
+let timerInterval;  // 타이머의 인터벌을 저장할 변수. setInterval의 반환값을 저장하여 나중에 타이머를 멈출 때 사용 현재 undefined
 let seconds = 0;  // 경과 시간을 초 단위로 저장할 변수
 
 function initTimer() { //타이머기능설정
