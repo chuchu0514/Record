@@ -86,6 +86,13 @@ function changeMonth(delta) {
     updateCalendar();
 }
 
+//연도 변경 함수
+function changeYear(delta) {
+    const year = currentDate.getFullYear();
+    currentDate.setFullYear(year + delta);
+    updateCalendar();
+}
+
 // 날짜 선택 함수
 function selectDate(date) {
     selectedDate = date;
