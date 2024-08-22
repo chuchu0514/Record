@@ -93,6 +93,10 @@ footer {
     user-select: none; /*텍스트 선택 막기*/
 }
 
+#calendar-body td {
+    position: relative; /* 아이콘을 절대 위치로 배치하기 위해 필요 */    
+}
+
 #calendar-body td.today {
     background-color: #e0e8f0;
     font-weight: bold;
@@ -241,7 +245,7 @@ button:hover {
 #reset-timer { background-color: #008CBA; }
 #reset-timer:hover { background-color: #007a9e; }
 
-h1, h2 {
+h1, h2, h3 {
     color: #333;
 }
 
@@ -253,8 +257,6 @@ a {
 a:hover {
     text-decoration: underline;
 }
-
-
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
@@ -287,4 +289,21 @@ a:hover {
     color: white;
     padding: 10px 20px;
     text-align: center;
+}
+
+/* 체크 아이콘 스타일 */
+.checkmark {
+    width: 16px; /* 아이콘의 너비 */
+    height: 16px; /* 아이콘의 높이 */
+    background: url('5291043.png') no-repeat center center; /* 체크 아이콘 이미지 경로 */
+    background-size: contain; /* 아이콘이 셀에 맞게 조정되도록 */
+    display: inline-block;
+    vertical-align: middle; /* 아이콘의 세로 정렬 */
+    margin-left: 4px; /* 셀의 왼쪽 여백 */
+}
+
+#calendar-body td .checkmark {
+    position: absolute; /* 셀 내에서 절대 위치 */
+    bottom: 5px; /* 셀의 아래쪽 여백 */
+    right: 5px; /* 셀의 오른쪽 여백 */
 }
