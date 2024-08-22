@@ -36,9 +36,19 @@
             </section>
                               
             <section id="notes">
-                <h2>메모</h2>
-                <textarea id="memo-text" rows="5" placeholder="이 날의 메모를 입력하세요."></textarea><!--텍스트 에어리어-->
-                <button id="save-memo">저장</button>
+                <div id="study-container">
+                    <h2>공부 기록</h2>
+                    <div id="study-records">
+                        <!-- 과목과 공부 시간이 여기에 추가됩니다 -->
+                    </div>
+                    <h3>총 공부 시간: <span id="total-study-time">00:00:00</span></h3>
+                </div>
+                
+                <div id="memo-container">
+                    <h2>메모</h2>
+                    <textarea id="memo-text" rows="5" placeholder="메모를 입력하세요."></textarea>
+                    <button id="save-memo">저장</button>
+                </div>
             </section>
         </div>
 

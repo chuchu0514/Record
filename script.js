@@ -170,3 +170,56 @@ window.onload = function() {
     initNotes();
     loadMemo();
 };
+
+let isRunning = false;
+let timer; // 전역변수로 설정하여 나중에 접근할 수 있게 함
+let elapsedTime = 0; // 현재까지의 타이머 진행 시간을 저장하는 변수
+
+// 기존 타이머 초기화 관련 코드와 충돌하지 않도록 새로 만든 함수와 변수
+let totalStudyTimeInSeconds = 0;
+
+document.getElementById('reset-timer').addEventListener('click', function() {
+    if (isRunning) {
+        clearInterval(timer);
+        isRunning = false;
+    }
+
+    // 타이머 초기화 시 과목과 시간을 입력받기 위한 창 띄우기
+    const subject = prompt("과목을 입력하세요:");
+    if (!subject) return; // 과목이 입력되지 않으면 종료
+
+    const studyTime = document.getElementById('timer-display').textContent;
+
+    // 과목과 공부 시간을 기록
+    const studyRecords = document.getElementById('study-records');
+    const record = document.createElement('div');
+    record.textContent = `${subject}: ${studyTime}`;
+    studyRecords.appendChild(record);
+
+    // 공부 시간을 초로 변환하여 총합 계산
+    const [hours, minutes, seconds] = studyTime.split(':').map(Number);
+    const studyTimeInSeconds = (hours * 3600) + (minutes * 60) + seconds;
+    totalStudyTimeInSeconds += studyTimeInSeconds;
+
+    // 총 공부 시간 업데이트
+    updateTotalStudyTime();
+
+    // 기존 resetTimer 함수 호출 (필요한 경우 사용자의 resetTimer 함수)
+    existingResetTimer();
+});
+
+function updateTotalStudyTime() {
+    const hours = Math.floor(totalStudyTimeInSeconds / 3600);
+    const minutes = Math.floor((totalStudyTimeInSeconds % 3600) / 60);
+    const seconds = totalStudyTimeInSeconds % 60;
+    document.getElementById('total-study-time').textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+// 기존 resetTimer 함수는 그대로 둡니다.
+function existingResetTimer() {
+    // 여기에 기존 resetTimer 함수의 내용을 추가합니다
+    elapsedTime = 0;
+    document.getElementById('timer-display').textContent = "00:00:00";
+    // 추가로 필요시 기존 타이머 초기화 코드가 여기에 포함될 수 있습니다.
+}

@@ -120,7 +120,33 @@ footer {
 }
 
 #notes {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#study-container, #memo-container {
+    flex: 1;
     padding: 1rem;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#study-container {
+    margin-right: 20px; /* 왼쪽 여백 */
+}
+
+#study-records div {
+    margin-bottom: 10px;
+}
+
+#study-records {
+    margin-bottom: 20px;
+}
+
+#total-study-time {
+    font-weight: bold;
 }
 
 #memo-text {
