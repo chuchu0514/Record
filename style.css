@@ -1,14 +1,29 @@
+/* 기본 스타일 */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background: url('background-pattern.png') repeat; /* 배경 이미지 추가 */
-    min-height: 100vh; /*뷰포트 바디가 항상 꽉차게 물론 초과일 순 있음 최소한임 최소한*/
+    min-height: 100vh; /* 뷰포트 바디가 항상 꽉차게 물론 초과일 순 있음 최소한임 최소한 */
     display: flex;
-    flex-direction: column; /*플렉스 자식 세로로 row도 맘에 들긴 함 고민좀*/
+    flex-direction: column; /* 플렉스 자식 세로로 row도 맘에 들긴 함 고민좀 */
 }
 
+/* 링크 스타일 */
+h1, h2, h3 {
+    color: #333;
+}
+
+a {
+    color: #4CAF50; /* 링크 색 언더바 색도 포함 */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 헤더 스타일 */
 header { 
     background-color: #333; /* 헤더 색상 변경 */
     padding: 2rem; /* 패딩을 늘려서 헤더 크기 증가 */
@@ -29,14 +44,15 @@ header h2 {
     color: #fff;
 }
 
+/* 메인 스타일 */
 main {
-    flex: 1; /*부모요소의 남은 공간 다 차지*/
+    flex: 1; /* 부모 요소의 남은 공간 다 차지 */
     padding: 2rem;
     background-color: #f0f0f0;
-   
 }
 
-section { /*메인과 묘하게 다른색*/
+/* 섹션 스타일 */
+section { /* 메인과 묘하게 다른색 */
     background-color: #fff; 
     border-radius: 10px; /* 섹션 모서리 둥글게 */
     box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* 섹션 그림자 강화 */
@@ -49,31 +65,30 @@ section:hover {
     transform: translateY(-5px); /* 섹션 호버 시 위로 이동 */
 }
 
+/* 푸터 스타일 */
 footer {
     background-color: #333;
     color: #fff;
     text-align: center;
     padding: 1rem;
     bottom: 0;
-    position: fixed; /*이거 해놓으면 width100%해줘야함*/
-    width: 100%;
     box-sizing: border-box;
-    
 }
 
 /* 달력과 메모 컨테이너 스타일 */
 #calendar-notes-container {
     display: flex;
-    justify-content: space-between; /*균등 양끝 배치*/
-    gap: 20px; /*내용물 사이 간격*/
-    margin-bottom: 2rem; /*타이머랑 컨테이너 간격*/
-    box-sizing: border-box; /*박스 사이즈를 정해놓기 평상시엔 content-box임*/
+    justify-content: space-between; /* 균등 양끝 배치 */
+    gap: 20px; /* 내용물 사이 간격 */
+    margin-bottom: 2rem; /* 타이머랑 컨테이너 간격 */
+    box-sizing: border-box; /* 박스 사이즈를 정해놓기 평상시엔 content-box임 */
 }
 
+/* 캘린더 스타일 */
 #calendar, #notes {
     flex: 1;   
     display: flex;
-    flex-direction: column;/*위에있음 플렉스 자식 세로로*/
+    flex-direction: column; /* 위에있음 플렉스 자식 세로로 */
 }
 
 #calendar-container {
@@ -90,23 +105,22 @@ footer {
     align-items: center;
     margin-bottom: 10px;
     gap: 10px;  
-    user-select: none; /*텍스트 선택 막기*/
+    user-select: none; /* 텍스트 선택 막기 */
 }
-
 
 #calendar-body {
     width: 100%;
-    border-collapse: collapse;/*테이블 선 중복 없애기 */
+    border-collapse: collapse; /* 테이블 선 중복 없애기 */
 }
 
 #calendar-body th, #calendar-body td {
     text-align: center;
     border: 1px solid #ddd;
-    transition: all 0.3s linear;/*상태변화시 애니메이션*/
+    transition: all 0.3s linear; /* 상태변화시 애니메이션 */
     padding: 10px;
     height: 50px;
-    vertical-align: middle; /*크게 필요는 없음 수직 가운데 정렬*/
-    user-select: none; /*텍스트 선택 막기*/
+    vertical-align: middle; /* 크게 필요는 없음 수직 가운데 정렬 */
+    user-select: none; /* 텍스트 선택 막기 */
 }
 
 #calendar-body td {
@@ -114,20 +128,20 @@ footer {
 }
 
 #calendar-body td.today {
-    background-color: #e0e8f0;
+    background-color: #e3e7eb;
     font-weight: bold;
 }   
 
 #calendar-body td.selected {
-    background-color: #4CAF50;
+    background-color: #cbefb8;
     color: white;
 }
 
 #calendar-body td.today.selected {
-    background-color: #4CAF50;
+    background-color: #cbefb8;
     color: white;
     font-weight: bold;
-    box-shadow: 0 0 0 2px #e0e8f0 inset; /*inset은 요소 내부에*/
+    box-shadow: 0 0 0 2px #e0e8f0 inset; /* inset은 요소 내부에 */
 }
 
 #calendar-body td.today.selected:hover {
@@ -139,6 +153,34 @@ footer {
     cursor: pointer;
 }
 
+/* 캘린더 색상 지표 스타일 */
+#color-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.legend-item {
+    display: inline-block;
+    width: 20px; /* 작은 크기로 조정 */
+    height: 20px; /* 작은 크기로 조정 */
+    margin: 0 5px;
+    vertical-align: middle;
+    border: 1px solid #ddd; /* 선택적: 구분을 위해 테두리 추가 */
+}
+
+.legend-label {
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
+    font-size: 12px; /* 폰트 크기를 조정 */
+    line-height: 20px; /* 아이템과 텍스트가 수직 정렬되도록 */
+}
+
+
+/* 노트 스타일 */
 #notes {
     display: flex;
     justify-content: space-between;
@@ -157,37 +199,108 @@ footer {
     margin-right: 20px; /* 왼쪽 여백 */
 }
 
+#study-records {
+    margin-bottom: 20px;
+}
+
 #study-records div {
     background-color: #f9f9f9; /* 공부 기록 배경 색상 */
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-    margin-bottom: 10px;
     transition: background-color 0.3s; /* 애니메이션 효과 */
+    position: relative; /* 수정 및 삭제 버튼을 절대 위치로 배치하기 위해 필요 */
 }
 
 #study-records div:hover {
     background-color: #e0e0e0; /* 공부 기록 호버 시 색상 변경 */
 }
 
-#study-records {
-    margin-bottom: 20px;
-}
-
 #total-study-time {
     font-weight: bold;
 }
 
+/* 공부 기록 수정 및 삭제 버튼 스타일 */
+.study-record {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.study-record:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.study-record button {
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    margin-left: 0; /* 아이콘 간격 제거 */
+    color: #333;
+    font-weight: bold;
+}
+
+.study-record i {
+    font-size: 1.2rem; /* 아이콘 크기 조정 */
+    color: #4CAF50; /* 아이콘 색상 */
+}
+
+.study-record button:hover i {
+    color: #45a049; /* 호버 시 아이콘 색상 변경 */
+}
+
+/* 공부 기록 배경색을 연두색으로 설정 */
+.study-record {
+    background-color: #f9f9f9; /* 기본 배경 색상 */
+}
+
+/* 이스터에그 배경색 */
+.study-record.egg {
+    background-color: #d0f0c0; /* 연두색 배경 */
+}
+
+/* 스터디 메모 편집기 스타일 */
+.memo-editor {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* 다른 요소 위에 표시되도록 */
+}
+
+.memo-editor textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.memo-editor button {
+    margin-right: 10px;
+}
+
+/* 메모 스타일 */
 #memo-text {
     width: 100%;
-    flex-grow: 1; /*여분을 공평하게 나누기 */
-    min-height: 300px;/*휴대폰을 위해*/
-    resize: none; /*텍스트에어리어 크기조절 없애기*/
+    flex-grow: 1; /* 여분을 공평하게 나누기 */
+    min-height: 300px; /* 휴대폰을 위해 */
+    resize: none; /* 텍스트 영역 크기조절 없애기 */
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /*이거 없으면 컨텐츠가 width100%먹고 패딩,테두리 추가됨*/
+    box-sizing: border-box; /* 이거 없으면 컨텐츠가 width 100% 먹고 패딩, 테두리 추가됨 */
 }
 
 #save-memo {
@@ -201,13 +314,14 @@ footer {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
-    align-self: flex-start;/*저장버튼 왼쪽 정렬*/
+    align-self: flex-start; /* 저장 버튼 왼쪽 정렬 */
 }
 
 #save-memo:hover {
     background-color: #45a049;
 }
 
+/* 타이머 스타일 */
 #timer {
     text-align: center;
     margin-top: 2rem;
@@ -218,7 +332,7 @@ footer {
 #timer-display {
     font-size: 2rem;
     margin-bottom: 1rem;
-    padding-top: 1rem; /*타이머 시간을 복사하고 싶을 수 있으니 유저선택을 막지 않음*/
+    padding-top: 1rem; /* 타이머 시간을 복사하고 싶을 수 있으니 유저 선택을 막지 않음 */
 }
 
 #timer-buttons {
@@ -226,21 +340,7 @@ footer {
     user-select: none;
 }
 
-.year-button {
-    font-size: 1em;/*em은 부모요소에 영향을 받음*/
-    padding: 5px 7px;
-    background-color: transparent;/*투명색 뒤에 요소까지 보이게 함*/
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.year-button:hover {
-    background-color: #f0f0f0;
-}
-
+/* 버튼 스타일 */
 button {
     background-color: #4CAF50;
     border: none;
@@ -262,6 +362,11 @@ button:hover {
     transform: scale(1.05); /* 버튼 호버 시 확대 */
 }
 
+button:focus {
+    outline: none; /* 포커스 시 기본 테두리 제거 */
+}
+
+/* 타이머 버튼 스타일 */
 #start-timer { background-color: #4CAF50; }
 #start-timer:hover { background-color: #45a049; }
 
@@ -271,18 +376,32 @@ button:hover {
 #reset-timer { background-color: #008CBA; }
 #reset-timer:hover { background-color: #007a9e; }
 
-h1, h2, h3 {
-    color: #333;
+
+/* 개발일지의 개발일지 */
+.dailyRecord {
+    background-color: gray;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
 }
 
-a {
-    color: #4CAF50; /*링크 색 언더바 색도 포함*/
-    text-decoration: none;
+/* 체크 아이콘 스타일 */
+.checkmark {
+    width: 16px; /* 아이콘의 너비 */
+    height: 16px; /* 아이콘의 높이 */
+    background: url('5291043.png') no-repeat center center; /* 체크 아이콘 이미지 경로 */
+    background-size: contain; /* 아이콘이 셀에 맞게 조정되도록 */
+    display: inline-block;
+    vertical-align: middle; /* 아이콘의 세로 정렬 */
+    margin-left: 4px; /* 셀의 왼쪽 여백 */
 }
 
-a:hover {
-    text-decoration: underline;
+#calendar-body td .checkmark {
+    position: absolute; /* 셀 내에서 절대 위치 */
+    bottom: 5px; /* 셀의 아래쪽 여백 */
+    right: 5px; /* 셀의 오른쪽 여백 */
 }
+
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
@@ -308,28 +427,4 @@ a:hover {
     button {
         padding: 8px 16px;
     }
-}
-
-.dailyRecord {
-    background-color: gray;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-}
-
-/* 체크 아이콘 스타일 */
-.checkmark {
-    width: 16px; /* 아이콘의 너비 */
-    height: 16px; /* 아이콘의 높이 */
-    background: url('5291043.png') no-repeat center center; /* 체크 아이콘 이미지 경로 */
-    background-size: contain; /* 아이콘이 셀에 맞게 조정되도록 */
-    display: inline-block;
-    vertical-align: middle; /* 아이콘의 세로 정렬 */
-    margin-left: 4px; /* 셀의 왼쪽 여백 */
-}
-
-#calendar-body td .checkmark {
-    position: absolute; /* 셀 내에서 절대 위치 */
-    bottom: 5px; /* 셀의 아래쪽 여백 */
-    right: 5px; /* 셀의 오른쪽 여백 */
 }
