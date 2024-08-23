@@ -163,6 +163,13 @@ function updateStudyRecordsDisplay() {
             recordElement.classList.add('study-record');
             recordElement.textContent = `${record.subject} - ${Math.floor(record.time / 3600)}h ${Math.floor((record.time % 3600) / 60)}m ${record.time % 60}s`;
 
+            // 메모 아이콘 추가
+            if (record.memo) {
+                const checkmark = document.createElement('span');
+                checkmark.classList.add('checkmark');
+                recordElement.appendChild(checkmark);
+            }
+
             // 이스터에그: 과목명이 '514'일 때 배경색 변경
             if (record.subject === '514') {
                 recordElement.style.backgroundColor = '#d0f0c0'; // 연두색 배경
@@ -198,6 +205,7 @@ function updateStudyRecordsDisplay() {
         });
     }
 }
+
 
 // 총 공부 시간 업데이트
 function updateTotalStudyTime() {
