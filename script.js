@@ -350,19 +350,33 @@ function resetTimer() {
     timerInterval = null;
     seconds = 0; // 타이머 초 초기화
     updateTimerDisplay();
+    askForSubject();
+}
 
-    // 과목 이름을 사용자로부터 입력받기
+// 과목명을 입력받고 타이머 초기화 확인
+function askForSubject() {
     const subject = prompt('타이머를 초기화했습니다. 공부한 과목 이름을 입력하세요:');
     
-    if (subject) {
-        const today = new Date();
-        addStudyRecord(subject, seconds, today);
-        selectDate(today);
-        addStudyTime(seconds);
-    } else {
+    if (subject === null) {
+        // 취소 버튼을 누른 경우, 두 번째 확인 팝업을 표시
+        const confirmCancel = confirm('취소하시겠습니까? 과목명 입력을 원하시면 확인을 클릭하십시오.');
+        if (confirmCancel) {
+            resetTimer(); // 초기화 확인 요청을 다시 호출
+        } else {
+            
+        }
+    } else if (subject.trim() === '') {
         alert('과목 이름이 입력되지 않았습니다.');
+        askForSubject(); // 빈 입력일 경우 다시 요청
+    } else {
+        // 과목 이름이 입력된 경우, 타이머 기록 추가 및 초기화
+        addStudyRecord(subject, seconds, new Date());
+        selectDate(new Date());
+        addStudyTime(seconds);
     }
 }
+
+
 
 // 타이머 업데이트
 function updateTimer() {
