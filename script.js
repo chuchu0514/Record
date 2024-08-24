@@ -346,12 +346,15 @@ function stopTimer() {
 
 // 타이머 리셋
 function resetTimer() {
+    if (seconds > 0) {  // 만약 시간이 0보다 크다면 기록을 저장합니다.
+        askForSubject();  // 과목명을 입력받고 기록 저장
+    }
     clearInterval(timerInterval);
     timerInterval = null;
     seconds = 0; // 타이머 초 초기화
     updateTimerDisplay();
-    askForSubject();
 }
+
 
 // 과목명을 입력받고 타이머 초기화 확인
 function askForSubject() {
