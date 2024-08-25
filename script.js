@@ -5,8 +5,10 @@ let selectedDate = new Date(); // 선택된 날짜
 let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {};
 
 // 타이머 변수
-let timerInterval;
+let timerRequestId;
 let seconds = 0; // 타이머 초 단위
+let milliseconds = 0; // 타이머 밀리초 단위
+let lastUpdateTime = 0; // 마지막 업데이트 시간 (밀리초 단위)
 
 // 달력 기능 초기화
 function initCalendar() {
@@ -139,7 +141,6 @@ function selectDate(date) {
     updateStudyRecordsDisplay();
 }
 
-
 // 공부 기록 추가
 function addStudyRecord(subject, timeInSeconds, date = new Date()) {
     const dateString = getDateString(date);  // 날짜를 매개변수로 전달받거나 오늘 날짜를 기본값으로 사용
@@ -205,7 +206,6 @@ function updateStudyRecordsDisplay() {
         });
     }
 }
-
 
 // 총 공부 시간 업데이트
 function updateTotalStudyTime() {
@@ -332,29 +332,30 @@ function initTimer() {
 
 // 타이머 시작
 function startTimer() {
-    if (!timerInterval) {
-        timerInterval = setInterval(updateTimer, 1000); // 1초마다 업데이트
+    if (!timerRequestId) {
+        lastUpdateTime = performance.now(); // 시작 시간 설정
+        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
     }
 }
 
 // 타이머 중지
 function stopTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    cancelAnimationFrame(timerRequestId);
+    timerRequestId = null;
     saveStudyTime();
 }
 
 // 타이머 리셋
 function resetTimer() {
-    if (seconds > 0) {  // 만약 시간이 0보다 크다면 기록을 저장합니다.
+    if (seconds > 0 || milliseconds > 0) {  // 만약 시간이 0보다 크다면 기록을 저장합니다.
         askForSubject();  // 과목명을 입력받고 기록 저장
     }
-    clearInterval(timerInterval);
-    timerInterval = null;
+    cancelAnimationFrame(timerRequestId);
+    timerRequestId = null;
     seconds = 0; // 타이머 초 초기화
+    milliseconds = 0; // 타이머 밀리초 초기화
     updateTimerDisplay();
 }
-
 
 // 과목명을 입력받고 타이머 초기화 확인
 function askForSubject() {
@@ -379,12 +380,22 @@ function askForSubject() {
     }
 }
 
-
-
 // 타이머 업데이트
-function updateTimer() {
-    seconds++; // 초 단위로 증가
+function updateTimer(timestamp) {
+    if (!lastUpdateTime) {
+        lastUpdateTime = timestamp;
+    }
+    const elapsed = timestamp - lastUpdateTime;
+    milliseconds += elapsed;
+    lastUpdateTime = timestamp;
+
+    while (milliseconds >= 1000) {
+        milliseconds -= 1000;
+        seconds++;
+    }
+
     updateTimerDisplay();
+    timerRequestId = requestAnimationFrame(updateTimer);
 }
 
 // 타이머 디스플레이 업데이트
@@ -392,10 +403,9 @@ function updateTimerDisplay() {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    document.getElementById('timer-display').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    const ms = Math.floor(milliseconds / 10); // 밀리초를 100단위로 변환 (0~99)
+    document.getElementById('timer-display').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}.${String(ms).padStart(2, '0')}`; // 포맷 변경
 }
-
-
 
 // 초기화 함수 호출
 window.addEventListener('load', () => {
