@@ -150,6 +150,7 @@ function addStudyRecord(subject, timeInSeconds, date = new Date()) {
     studyRecords[dateString].push({ subject, time: timeInSeconds });
     localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
     updateStudyRecordsDisplay();  // 화면 업데이트
+    updateTotalStudyTime(); // 총 공부 시간 업데이트 추가
 }
 
 // 공부 기록 디스플레이 업데이트
@@ -184,7 +185,7 @@ function updateStudyRecordsDisplay() {
             const memoButton = document.createElement('button');
             memoButton.textContent = '메모';
             memoButton.addEventListener('click', () => showMemoEditor(record, index));
-
+            
             // 수정 버튼 아이콘 생성
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-edit"></i>'; // 수정 아이콘
@@ -212,11 +213,16 @@ function updateTotalStudyTime() {
     const dateString = getDateString(selectedDate);
     const totalSeconds = studyRecords[dateString]?.reduce((total, record) => total + record.time, 0) || 0;
 
+    document.getElementById('total-study-time').textContent = formatTime(totalSeconds);
+}
+
+
+// 시간 포맷팅 함수
+function formatTime(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const secs = totalSeconds % 60;
-
-    document.getElementById('total-study-time').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
 // 총 공부 시간 추가
@@ -288,20 +294,27 @@ function editRecord(recordIndex, dateString) {
         alert('과목 이름이 입력되지 않았습니다.');
     }
 }
-
 // 공부 기록 삭제
 function deleteRecord(recordIndex, dateString) {
     if (confirm('정말로 이 기록을 삭제하시겠습니까?')) {
+        // 삭제할 기록의 시간을 저장
+        const recordTime = studyRecords[dateString][recordIndex].time; 
         studyRecords[dateString].splice(recordIndex, 1);
 
+        // 만약 날짜에 관련된 공부 기록이 없으면 해당 날짜의 기록 삭제
         if (studyRecords[dateString].length === 0) {
-            delete studyRecords[dateString]; // 빈 배열이면 삭제
+            delete studyRecords[dateString];
         }
 
+        // 로컬 스토리지에 저장
         localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
-        updateStudyRecordsDisplay();  // 화면 업데이트
+
+        // 공부 기록과 총 공부 시간 업데이트
+        updateStudyRecordsDisplay();
+        updateTotalStudyTime();  
     }
 }
+
 
 // 메모 기능 초기화
 function initNotes() {
@@ -321,8 +334,8 @@ function saveMemoToLocalStorage() {
     const dateString = getDateString(selectedDate);
     localStorage.setItem(`memo-${dateString}`, memoText);
     alert('메모가 저장되었습니다.');
+    updateCalendar(); // 메모 저장 후 달력 업데이트
 }
-
 // 타이머 기능 초기화
 function initTimer() {
     document.getElementById('start-timer').addEventListener('click', startTimer);
