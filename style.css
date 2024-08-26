@@ -85,7 +85,7 @@ footer {
 }
 
 /* 캘린더 스타일 */
-#calendar, #notes {
+#calendar {
     flex: 1; /*캘린더와 노트가 공평하게 넓이차지*/
     display: flex;
     flex-direction: column; /* 위에있음 플렉스 자식 세로로 */
@@ -181,14 +181,10 @@ footer {
 }
 /*여기까지공부*/
 
-
-
-
-/* 노트 스타일 */
-#notes {
+#notes{ /*섹션때매 패딩 2rem*/
+    flex: 1; /*캘린더와 노트가 공평하게 넓이차지*/
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    flex-direction: column; /* 위에있음 플렉스 자식 세로로 */ 
 }
 
 #study-container, #memo-container {
@@ -199,10 +195,6 @@ footer {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#study-container {
-    margin-right: 20px; /* 왼쪽 여백 */
-}
-
 #study-records {
     margin-bottom: 20px;
 }
@@ -211,7 +203,7 @@ footer {
     background-color: #f9f9f9; /* 공부 기록 배경 색상 */
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px;
     transition: background-color 0.3s; /* 애니메이션 효과 */
     position: relative; /* 수정 및 삭제 버튼을 절대 위치로 배치하기 위해 필요 */
 }
@@ -223,6 +215,8 @@ footer {
 #total-study-time {
     font-weight: bold;
 }
+
+/*여기까지*/
 
 /* 공부 기록 수정 및 삭제 버튼 스타일 */
 .study-record {
