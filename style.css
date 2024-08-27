@@ -23,25 +23,30 @@ a:hover {
     text-decoration: underline;
 }
 
+
 /* 헤더 스타일 */
 header { 
     background-color: #333; /* 헤더 색상 변경 */
-    padding: 2rem; /* 패딩을 늘려서 헤더 크기 증가 */
+    padding: 3rem; /* 패딩을 늘려서 헤더 크기 증가 */
     text-align: center;
     color: #fff;
-    
+    display: flex;
+    flex-direction: column;
 }
 
 header h1 {
     font-size: 2rem; /* 제목 크기 증가 */
     margin: 0; /* 제목의 기본 마진 제거 */
     color: #fff;
+    display: inline;
 }
 
 header h2 {
     font-size: 1.5rem; /* 부제목 크기 증가 */
     margin: 0; /* 부제목의 기본 마진 제거 */
     color: #fff;
+    display: inline;
+
 }
 
 /* 메인 스타일 */
@@ -70,7 +75,7 @@ footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
     bottom: 0;
     box-sizing: border-box;
 }
@@ -165,6 +170,7 @@ footer {
     flex-wrap: wrap; /*다른 줄로 넘어갈 수 있게끔*/
     margin-top: 20px;
     text-align: center;
+    user-select: none;
 }
 
 .legend-item {
@@ -199,42 +205,28 @@ footer {
     margin-bottom: 20px;
 }
 
-#study-records div {
+#study-records div { /*얘는 자식div를 뜻함 본인 div가 아니고 즉 각각의 공부기록 .study record랑 같은 말임*/
     background-color: #f9f9f9; /* 공부 기록 배경 색상 */
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 15px;
-    transition: background-color 0.3s; /* 애니메이션 효과 */
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+    align-items: center; /* 교차축 중앙 정렬 */
+    transition: background-color 0.3s, box-shadow 0.3s;
     position: relative; /* 수정 및 삭제 버튼을 절대 위치로 배치하기 위해 필요 */
+    
 }
 
 #study-records div:hover {
     background-color: #e0e0e0; /* 공부 기록 호버 시 색상 변경 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 #total-study-time {
     font-weight: bold;
-}
-
-/*여기까지*/
-
-/* 공부 기록 수정 및 삭제 버튼 스타일 */
-.study-record {
-    display: flex;
-    justify-content: space-between; /* 양쪽 끝으로 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    position: relative;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.study-record:hover {
-    background-color: #e0e0e0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .study-record button {
@@ -246,19 +238,16 @@ footer {
     font-weight: bold;
 }
 
-.study-record i {
+.study-record i {/*편집, 제거 아이콘*/
     font-size: 1.2rem; /* 아이콘 크기 조정 */
     color: #4CAF50; /* 아이콘 색상 */
+    
 }
 
 .study-record button:hover i {
-    color: #45a049; /* 호버 시 아이콘 색상 변경 */
+    color: #fff; /* 호버 시 아이콘 색상 변경 */
 }
 
-/* 공부 기록 배경색을 연두색으로 설정 */
-.study-record {
-    background-color: #f9f9f9; /* 기본 배경 색상 */
-}
 
 /* 이스터에그 배경색 */
 .study-record.egg {
@@ -270,18 +259,19 @@ footer {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    /*transform: translate(-50%, -50%); 그냥 이런 게 있다 정도만 알기*/
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000; /* 다른 요소 위에 표시되도록 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 값이 클 수록 위레 표시*/
 }
 
 .memo-editor textarea {
     width: 100%;
     margin-bottom: 10px;
+    resize: none;
 }
 
 .memo-editor button {
@@ -301,24 +291,6 @@ footer {
     box-sizing: border-box; /* 이거 없으면 컨텐츠가 width 100% 먹고 패딩, 테두리 추가됨 */
 }
 
-#save-memo {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;   
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    align-self: flex-start; /* 저장 버튼 왼쪽 정렬 */
-}
-
-#save-memo:hover {
-    background-color: #45a049;
-}
-
 /* 타이머 스타일 */
 #timer {
     text-align: center;
@@ -327,6 +299,9 @@ footer {
     padding-bottom: 2rem; /* 추가 패딩 */
 }
 
+#timer h2{
+    user-select: none;
+}
 #timer-display {
     font-size: 2rem;
     margin-bottom: 1rem;
@@ -401,8 +376,9 @@ button:focus {
 }
 
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
+/* 기본 미디어 쿼리 */
+@media (max-width: 1024px) {
+    /* 테이블이나 카드 레이아웃을 그리드 레이아웃으로 변경할 때 */
     #calendar-notes-container {
         flex-direction: column;
     }
@@ -411,18 +387,68 @@ button:focus {
     }
 }
 
+/* 모바일 화면을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    /* 주요 섹션과 요소의 스타일 조정 */
+    #calendar-notes-container {
+        flex-direction: column;
+    }
+    #calendar {
+        margin-bottom: 1rem; /* 하단 여백 조정 */
+    }
+    #notes {
+        margin-top: 1rem; /* 상단 여백 조정 */
+    }
+    #study-container, #memo-container {
+        padding: 1rem;
+    }
+    #study-records div {
+        padding: 10px; /* 내부 여백 조정 */
+    }
+}
+
+/* 소형 모바일 화면을 위한 미디어 쿼리 */
 @media (max-width: 600px) {
+    /* 더 작은 화면을 위한 스타일 조정 */
     main { 
         padding: 1rem;
-        font-size: 0.9rem; 
+        font-size: 0.9rem; /* 폰트 크기 조정 */
     }
     #calendar-container {
         max-width: 100%;
     }
     #timer-display {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* 타이머 표시 크기 조정 */
     }
     button {
-        padding: 8px 16px;
+        padding: 8px 16px; /* 버튼 패딩 조정 */
+    }
+    #calendar-body td {
+        height: 40px; /* 셀 높이 조정 */
+        font-size: 0.8rem; /* 폰트 크기 조정 */
+    }
+    #memo-text {
+        min-height: 150px; /* 메모 영역 최소 높이 조정 */
+    }
+}
+
+/* 아주 작은 화면을 위한 미디어 쿼리 */
+@media (max-width: 400px) {
+    /* 아주 작은 화면에서의 스타일 조정 */
+    header h1 {
+        font-size: 1.5rem; /* 제목 크기 조정 */
+    }
+    header h2 {
+        font-size: 1.2rem; /* 부제목 크기 조정 */
+    }
+    #study-records div {
+        font-size: 0.8rem; /* 폰트 크기 조정 */
+        padding: 8px; /* 내부 여백 조정 */
+    }
+    #timer-display {
+        font-size: 1.2rem; /* 타이머 표시 크기 조정 */
+    }
+    button {
+        font-size: 0.9rem; /* 버튼 폰트 크기 조정 */
     }
 }
