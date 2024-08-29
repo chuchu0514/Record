@@ -96,6 +96,12 @@ footer {
     flex-direction: column; /* 위에있음 플렉스 자식 세로로 */
 }
 
+#current-month-year:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #333;
+}
+
 #calendar-container {
     /*width: 100%;*/
     /*margin: 0 auto;*/
@@ -362,10 +368,9 @@ button:focus {
 .checkmark {
     width: 16px; /* 아이콘의 너비 */
     height: 16px; /* 아이콘의 높이 */
-    background: url('5291043.png') no-repeat center center; /* 체크 아이콘 이미지 경로 */
-    background-size: contain; /* 아이콘이 셀에 맞게 조정되도록 */
+    background: url('5291043.png') no-repeat;
+    background-size: contain; /* 아이콘이 셀에 맞게 조정되도록 이미지 비율은 유지*/
     display: inline-block;
-    vertical-align: middle; /* 아이콘의 세로 정렬 */
     margin-left: 4px; /* 셀의 왼쪽 여백 */
 }
 

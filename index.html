@@ -24,11 +24,11 @@
             <section id="calendar">
                 <div id="calendar-container">
                     <div id="calendar-header">
-                        <button class="year-button" onclick="changeYear(-1)">&#9664;</button>
+                        <button id="prev-year">&#9664;</button>
                         <button id="prev-month">이전</button>
-                        <h2 id="current-month-year"></h2>
+                        <h2 id="current-month-year" title="Today"></h2>
                         <button id="next-month">다음</button>
-                        <button class="year-button" onclick="changeYear(1)">&#9654;</button>
+                        <button id="next-year">&#9654;</button>
                     </div>
                     <table id="calendar-body">
                         <thead>
@@ -43,7 +43,7 @@
                 <!-- 색상 지표 추가 -->
                 <section id="color-legend">
                     <div class="legend-item" style="background-color: #e0f7fa;"></div>
-                    <span class="legend-label">1초 ~ 1시간</span>
+                    <span class="legend-label">1초 ~ 1시간 미만</span>
                     <div class="legend-item" style="background-color: #80deea;"></div>
                     <span class="legend-label">1 ~ 3시간</span>
                     <div class="legend-item" style="background-color: #00acc1;"></div>

@@ -2,7 +2,7 @@ let currentDate = new Date(); // 현재 날짜
 let selectedDate = new Date(); // 선택된 날짜
 
 // 공부 기록을 저장할 객체
-let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {};
+let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {}; //JSON.parse는 JSON 형식의 문자열을 JavaScript 객체로 변환하는 메서드입니다. not문자열
 
 // 타이머 변수
 let timerRequestId;
@@ -15,10 +15,19 @@ function initCalendar() {
     updateCalendar();
     document.getElementById('prev-month').addEventListener('click', () => changeMonth(-1));
     document.getElementById('next-month').addEventListener('click', () => changeMonth(1));
-}
+    document.getElementById('prev-year').addEventListener('click', ()=> changeYear(-1));
+    document.getElementById('next-year').addEventListener('click', ()=> changeYear(1));
+    document.getElementById('current-month-year').addEventListener('click', ()=> goToday());
 
+}
+//고투데이함수
+function goToday(){
+    currentDate=new Date();
+    selectedDate = new Date(); // 선택된 날짜
+    loadInit();
+}
 // 배경색 결정 함수
-function getBackgroundColor(totalSeconds) {
+function getBackgroundColor(totalSeconds) {//색반환
     const hours = totalSeconds / 3600; // 초를 시간으로 변환
 
     if (hours >= 7) {
@@ -41,24 +50,24 @@ function updateCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    document.getElementById('current-month-year').textContent = `${year}년 ${month + 1}월`;
-
+    document.getElementById('current-month-year').textContent = `${year}년 ${month + 1}월`;//년 월 표시
+   
     const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
+    const lastDay = new Date(year, month + 1, 0);//다음 달0일=전 달 막날
 
     const calendarBody = document.querySelector('#calendar-body tbody');
-    calendarBody.innerHTML = '';
+    calendarBody.textContent = '';
 
     const today = new Date();
     let date = 1;
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {//최대 6주를 상정
         const row = document.createElement('tr');
         for (let j = 0; j < 7; j++) {
             if (i === 0 && j < firstDay.getDay()) {
                 row.appendChild(document.createElement('td'));
             } else if (date > lastDay.getDate()) {
-                break;
+                row.appendChild(document.createElement('td'));
             } else {
                 const cell = document.createElement('td');
                 const cellDate = new Date(year, month, date);
@@ -68,10 +77,10 @@ function updateCalendar() {
                 dateText.textContent = date;
                 cell.appendChild(dateText);
 
-                // 클릭 이벤트 추가: 날짜 클릭 시 이동하도록 설정
+                //각각의 셀에 클릭 이벤트 추가: 날짜 클릭 시 이동하도록 설정
                 cell.addEventListener('click', () => {
                     if (cellDate.getFullYear() === 514 && cellDate.getMonth() === 4 && cellDate.getDate() === 14) {
-                        window.open('https://youtu.be/iyNAGmObuaI?si=i6q0DZ2VdxxVy7lqcom', '_blank'); // URL로 이동
+                        window.open('https://youtu.be/af6ttgmlFZI?si=0RHKb01OF9LTrNEY', '_blank'); // URL로 이동
                     } else {
                         selectDate(cellDate);
                     }
@@ -81,20 +90,20 @@ function updateCalendar() {
                     cell.classList.add('today');
                 } else {
                     // 오늘 날짜가 아닐 경우 배경색 설정
-                    const dateString = getDateString(cellDate);
-                    const totalSeconds = studyRecords[dateString]?.reduce((total, record) => total + record.time, 0) || 0;
+                    const dateString = getDateString(cellDate);//gDS내가 적은 함수임
+                    const totalSeconds = studyRecords[dateString]?.reduce((total, record) => total + record.time, 0) || 0; //studyRecords는 5번줄 전역으로 저장한 객체 + addStudyRecord에 정의한 객체임 참고로 total, record는 내가 그냥 임의로 붙인 이름이고 studyRecords안에 있는 프로퍼티나 메소드 사용가능
                     cell.style.backgroundColor = getBackgroundColor(totalSeconds);
                 }
 
-                if (isSameDate(cellDate, selectedDate)) {
+                if (isSameDate(cellDate, selectedDate)) { //클래스 추가
                     cell.classList.add('selected');
                 }
 
                 // 메모가 있는 날짜인지 확인
                 const dateString = getDateString(cellDate);
-                if (localStorage.getItem(`memo-${dateString}`)) {
+                if (localStorage.getItem(`memo-${dateString}`)) {//saveMemoToLocalStorage()에 정의
                     const checkmark = document.createElement('span');
-                    checkmark.classList.add('checkmark');
+                    checkmark.classList.add('checkmark'); //span에 체크마크 클래스
                     cell.appendChild(checkmark); // 체크 아이콘 추가
                 }
 
@@ -103,13 +112,13 @@ function updateCalendar() {
             }
         }
         calendarBody.appendChild(row);
-        if (date > lastDay.getDate()) break;
+        if (date > lastDay.getDate()) break; //불필요한 맨처음 for문 반복 중지를 위함
     }
 }
 
-// 날짜 문자열 변환
+// 날짜 문자열 변환 (객체 값을 갖고있음 원랜)
 function getDateString(date) {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; //padstart(a,b) a는 최소길이 b는 추가할 문자열 시작부분에 추가됨 저거 쓰려면 문자열이어야 해서 string으로 변환먼저 하는 거임
 }
 
 // 날짜 비교 함수
@@ -126,29 +135,28 @@ function changeMonth(delta) {
 }
 
 // 연도 변경 함수
-function changeYear(delta) {
-    const year = currentDate.getFullYear();
-    currentDate.setFullYear(year + delta);
+function changeYear(delta) { 
+    currentDate.setFullYear(currentDate.getFullYear()+ delta);
     updateCalendar();
 }
 
 // 날짜 선택 함수
 function selectDate(date) {
     selectedDate = date;
-    updateCalendar();
-    loadMemo();
-    loadStudyTime();  // 선택한 날짜의 총 공부 시간을 로드
-    updateStudyRecordsDisplay();
+    loadInit();
 }
+
+//여기까지 캘린더
+
 
 // 공부 기록 추가
 function addStudyRecord(subject, timeInSeconds, date = new Date()) {
-    const dateString = getDateString(date);  // 날짜를 매개변수로 전달받거나 오늘 날짜를 기본값으로 사용
-    if (!studyRecords[dateString]) {
-        studyRecords[dateString] = [];
+    const dateString = getDateString(date);  //오늘 날짜를 기본값으로 사용
+    if (!studyRecords[dateString]) { //객체의 datestring키에: 배열 (배열 안에 객체)
+        studyRecords[dateString] = []; //datestring이란 키의 값을 배열로 ,studtRecords는 객체임
     }
     studyRecords[dateString].push({ subject, time: timeInSeconds });
-    localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
+    localStorage.setItem('studyRecords', JSON.stringify(studyRecords));//전자는 그냥 내가 저장할 이름 a b c 이런 거여도 됨, 후자가 이제 js에서 내가 정의한 객체
     updateStudyRecordsDisplay();  // 화면 업데이트
     updateTotalStudyTime(); // 총 공부 시간 업데이트 추가
 }
@@ -421,10 +429,24 @@ function updateTimerDisplay() {
 }
 
 // 초기화 함수 호출
-window.addEventListener('load', () => {
+function loadInit(){
+
+    initCalendar();
+    initNotes();
+    initTimer();
+    loadStudyTime();
+    loadMemo();
+    updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
+
+}
+
+window.addEventListener('load', () => { //냅다 loadinit()박는 것보다 이게 안전함 
     initCalendar();
     initNotes();
     initTimer();
     loadStudyTime();
     updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
+    loadMemo;
 });
+
+//업데이트토털스터디타임이 로드스터디타임임 하나없애셈
