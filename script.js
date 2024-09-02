@@ -355,7 +355,8 @@ function initTimer() {
 function startTimer() {
     if (!timerRequestId) {
         lastUpdateTime = performance.now(); // 시작 시간 설정
-        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
+        timerRequestId = requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
+        saveTimerState(true); // 타이머 상태 저장 (실행 중)
     }
 }
 
@@ -363,19 +364,42 @@ function startTimer() {
 function stopTimer() {
     cancelAnimationFrame(timerRequestId);
     timerRequestId = null;
-    saveStudyTime();
+    saveTimerState(false); // 타이머 상태 저장 (중지됨)
 }
 
 // 타이머 리셋
 function resetTimer() {
-    if (seconds > 0 || milliseconds > 0) {  // 만약 시간이 0보다 크다면 기록을 저장합니다.
+    if (seconds > 0 || milliseconds > 0) {
         askForSubject();  // 과목명을 입력받고 기록 저장
     }
     cancelAnimationFrame(timerRequestId);
     timerRequestId = null;
-    seconds = 0; // 타이머 초 초기화
-    milliseconds = 0; // 타이머 밀리초 초기화
+    seconds = 0;
+    milliseconds = 0;
     updateTimerDisplay();
+    localStorage.removeItem('timerSeconds');
+    localStorage.removeItem('timerMilliseconds');
+    localStorage.removeItem('timerRunning');
+}
+
+// 타이머 상태를 저장하기 위한 함수
+function saveTimerState(isRunning) {
+    localStorage.setItem('timerSeconds', seconds);
+    localStorage.setItem('timerMilliseconds', milliseconds);
+    localStorage.setItem('timerRunning', isRunning);
+}
+
+// 타이머 상태를 로드하기 위한 함수
+function loadTimerState() {
+    seconds = parseInt(localStorage.getItem('timerSeconds')) || 0;
+    milliseconds = parseInt(localStorage.getItem('timerMilliseconds')) || 0;
+    const wasRunning = localStorage.getItem('timerRunning') === 'true';
+    
+    updateTimerDisplay();
+
+    if (wasRunning) {
+        startTimer(); // 타이머를 재개
+    }
 }
 
 // 과목명을 입력받고 타이머 초기화 확인
@@ -437,6 +461,7 @@ function loadInit(){
     loadStudyTime();
     loadMemo();
     updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
+    loadTimerState();
 
 }
 
@@ -447,6 +472,14 @@ window.addEventListener('load', () => { //냅다 loadinit()박는 것보다 이�
     loadStudyTime();
     updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
     loadMemo;
+    loadTimerState();
+});
+
+// 페이지가 닫힐 때 타이머 상태를 저장하는 이벤트
+window.addEventListener('beforeunload', () => {
+    if (timerRequestId) {
+        stopTimer(); // 페이지 닫힐 때 타이머 중지
+    }
 });
 
 //업데이트토털스터디타임이 로드스터디타임임 하나없애셈
