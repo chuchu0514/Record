@@ -24,7 +24,7 @@ function initCalendar() {
 function goToday(){
     currentDate=new Date();
     selectedDate = new Date(); // 선택된 날짜
-    loadInit();
+    loadUpdate();
 }
 // 배경색 결정 함수
 function getBackgroundColor(totalSeconds) {//색반환
@@ -41,10 +41,27 @@ function getBackgroundColor(totalSeconds) {//색반환
     } else if (totalSeconds > 0) {
         return '#e0f7fa'; // 연한 하늘색
     } else {
-        return ''; // 공부 시간이 없을 때 기본 배경색
+        return '#ffffff'; // 공부 시간이 없을 때 기본 배경색
     }
 }
+//호버배경색
+function getBackgroundColorHover(totalSeconds) {
+    const hours = totalSeconds / 3600; // 초를 시간으로 변환
 
+    if (hours >= 7) {
+        return '#003d33'; 
+    } else if (hours >= 5) {
+        return '#00695c'; 
+    } else if (hours >= 3) {
+        return '#0097a7'; 
+    } else if (hours >= 1) {
+        return '#4fc3f7'; 
+    } else if (totalSeconds > 0) {
+        return '#b2ebf2'; 
+    } else {
+        return '#ffffff'; 
+    }
+}
 // 달력 업데이트 함수
 function updateCalendar() {
     const year = currentDate.getFullYear();
@@ -93,6 +110,14 @@ function updateCalendar() {
                     const dateString = getDateString(cellDate);//gDS내가 적은 함수임
                     const totalSeconds = studyRecords[dateString]?.reduce((total, record) => total + record.time, 0) || 0; //studyRecords는 5번줄 전역으로 저장한 객체 + addStudyRecord에 정의한 객체임 참고로 total, record는 내가 그냥 임의로 붙인 이름이고 studyRecords안에 있는 프로퍼티나 메소드 사용가능
                     cell.style.backgroundColor = getBackgroundColor(totalSeconds);
+            
+                    cell.addEventListener('mouseover', () => {
+                        cell.style.backgroundColor = getBackgroundColorHover(totalSeconds);
+                    });
+
+                    cell.addEventListener('mouseout', () => {
+                        cell.style.backgroundColor = getBackgroundColor(totalSeconds);
+                    });
                 }
 
                 if (isSameDate(cellDate, selectedDate)) { //클래스 추가
@@ -143,17 +168,17 @@ function changeYear(delta) {
 // 날짜 선택 함수
 function selectDate(date) {
     selectedDate = date;
-    loadInit();
+    loadUpdate();
 }
 
-//여기까지 캘린더
+////여기까지 캘린더
 
 
 // 공부 기록 추가
 function addStudyRecord(subject, timeInSeconds, date = new Date()) {
     const dateString = getDateString(date);  //오늘 날짜를 기본값으로 사용
     if (!studyRecords[dateString]) { //객체의 datestring키에: 배열 (배열 안에 객체)
-        studyRecords[dateString] = []; //datestring이란 키의 값을 배열로 ,studtRecords는 객체임
+        studyRecords[dateString] = [];  //dateString이라는 키가 존재하지 않거나 그 값이 undefined일 경우, studyRecords[dateString]에 빈 배열을 할당하는 코드입니다.
     }
     studyRecords[dateString].push({ subject, time: timeInSeconds });
     localStorage.setItem('studyRecords', JSON.stringify(studyRecords));//전자는 그냥 내가 저장할 이름 a b c 이런 거여도 됨, 후자가 이제 js에서 내가 정의한 객체
@@ -170,8 +195,8 @@ function updateStudyRecordsDisplay() {
     if (studyRecords[dateString]) {
         studyRecords[dateString].forEach((record, index) => {
             const recordElement = document.createElement('div');
-            recordElement.classList.add('study-record');
-            recordElement.textContent = `${record.subject} - ${Math.floor(record.time / 3600)}h ${Math.floor((record.time % 3600) / 60)}m ${record.time % 60}s`;
+            recordElement.classList.add('study-record');//클래스 추가 참고 아이디는 study-records임
+            recordElement.textContent = `${record.subject} - ${Math.floor(record.time / 3600)}h ${Math.floor((record.time % 3600) / 60)}m ${record.time % 60}s`; //addStudyRecord함수에 푸쉬로 변수명을 키와 값을 subject로 받음
 
             // 메모 아이콘 추가
             if (record.memo) {
@@ -192,7 +217,7 @@ function updateStudyRecordsDisplay() {
             // 메모 버튼 생성
             const memoButton = document.createElement('button');
             memoButton.textContent = '메모';
-            memoButton.addEventListener('click', () => showMemoEditor(record, index));
+            memoButton.addEventListener('click', () => miniMemoEditor(record, index));
             
             // 수정 버튼 아이콘 생성
             const editButton = document.createElement('button');
@@ -233,24 +258,12 @@ function formatTime(totalSeconds) {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
-// 총 공부 시간 추가
-function addStudyTime(secondsToAdd) {
-    const dateString = getDateString(selectedDate);
-    if (!studyRecords[dateString]) {
-        studyRecords[dateString] = [];
-    }
-    updateTotalStudyTime();
-}
 
-// 총 공부 시간 로드
-function loadStudyTime() {
-    updateTotalStudyTime();
-}
 
-// 메모 편집기 표시
-function showMemoEditor(record, index) {
+//공부기록 메모 편집기 표시
+function miniMemoEditor(record, index) {
     const memoEditor = document.createElement('div');
-    memoEditor.classList.add('memo-editor');
+    memoEditor.classList.add('minimemo-editor');
     
     // 메모 입력 필드 생성
     const memoInput = document.createElement('textarea');
@@ -261,7 +274,7 @@ function showMemoEditor(record, index) {
     // 저장 버튼 생성
     const saveButton = document.createElement('button');
     saveButton.textContent = '저장';
-    saveButton.addEventListener('click', () => saveMemoForRecord(record, index, memoInput.value));
+    saveButton.addEventListener('click', () => saveMiniMemoForRecord(index, memoInput.value));
     
     // 취소 버튼 생성
     const cancelButton = document.createElement('button');
@@ -279,20 +292,20 @@ function showMemoEditor(record, index) {
     document.body.appendChild(memoEditor);
 }
 
-// 메모 저장 (기록에 대한)
-function saveMemoForRecord(record, index, memo) {
+// 공부기록 메모 저장 
+function saveMiniMemoForRecord(index, memo) {
     const dateString = getDateString(selectedDate);
-    studyRecords[dateString][index].memo = memo;
+    studyRecords[dateString][index].memo = memo;//minimemoeditor에서 이 함수가 쓰이는데 거기서 index를 인수로 받음
     localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
     updateStudyRecordsDisplay();  // 화면 업데이트
-    document.querySelector('.memo-editor').remove(); // 메모 편집기 닫기
+    document.querySelector('.minimemo-editor').remove(); // 메모 편집기 닫기
 }
 
 // 공부 기록 수정
 function editRecord(recordIndex, dateString) {
-    const newSubject = prompt('새로운 과목 이름을 입력하세요:', studyRecords[dateString][recordIndex].subject);
+    const newSubject = prompt('새로운 과목 이름을 입력하세요:', studyRecords[dateString][recordIndex].subject);//후자는 현재과목이 필드에 자동입력돼있음
 
-    if (newSubject !== null && newSubject.trim() !== '') {
+    if (newSubject !== null && newSubject.trim() !== '') {//후자는 newsubject에 입력이 됐을 때
         studyRecords[dateString][recordIndex].subject = newSubject;
         localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
         updateStudyRecordsDisplay();  // 화면 업데이트
@@ -305,13 +318,11 @@ function editRecord(recordIndex, dateString) {
 // 공부 기록 삭제
 function deleteRecord(recordIndex, dateString) {
     if (confirm('정말로 이 기록을 삭제하시겠습니까?')) {
-        // 삭제할 기록의 시간을 저장
-        const recordTime = studyRecords[dateString][recordIndex].time; 
         studyRecords[dateString].splice(recordIndex, 1);
 
         // 만약 날짜에 관련된 공부 기록이 없으면 해당 날짜의 기록 삭제
         if (studyRecords[dateString].length === 0) {
-            delete studyRecords[dateString];
+            delete studyRecords[dateString];  //객체의 빈 배열을 삭제하는 것
         }
 
         // 로컬 스토리지에 저장
@@ -322,6 +333,8 @@ function deleteRecord(recordIndex, dateString) {
         updateTotalStudyTime();  
     }
 }
+
+////여기까지 공부기록
 
 
 // 메모 기능 초기화
@@ -344,6 +357,11 @@ function saveMemoToLocalStorage() {
     alert('메모가 저장되었습니다.');
     updateCalendar(); // 메모 저장 후 달력 업데이트
 }
+
+////여기까지 노트
+
+
+
 // 타이머 기능 초기화
 function initTimer() {
     document.getElementById('start-timer').addEventListener('click', startTimer);
@@ -355,8 +373,7 @@ function initTimer() {
 function startTimer() {
     if (!timerRequestId) {
         lastUpdateTime = performance.now(); // 시작 시간 설정
-        timerRequestId = requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
-        saveTimerState(true); // 타이머 상태 저장 (실행 중)
+        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
     }
 }
 
@@ -364,42 +381,19 @@ function startTimer() {
 function stopTimer() {
     cancelAnimationFrame(timerRequestId);
     timerRequestId = null;
-    saveTimerState(false); // 타이머 상태 저장 (중지됨)
+    saveStudyTime();
 }
 
 // 타이머 리셋
 function resetTimer() {
-    if (seconds > 0 || milliseconds > 0) {
+    if (seconds > 0 || milliseconds > 0) {  // 만약 시간이 0보다 크다면 기록을 저장합니다.
         askForSubject();  // 과목명을 입력받고 기록 저장
     }
     cancelAnimationFrame(timerRequestId);
     timerRequestId = null;
-    seconds = 0;
-    milliseconds = 0;
+    seconds = 0; // 타이머 초 초기화
+    milliseconds = 0; // 타이머 밀리초 초기화
     updateTimerDisplay();
-    localStorage.removeItem('timerSeconds');
-    localStorage.removeItem('timerMilliseconds');
-    localStorage.removeItem('timerRunning');
-}
-
-// 타이머 상태를 저장하기 위한 함수
-function saveTimerState(isRunning) {
-    localStorage.setItem('timerSeconds', seconds);
-    localStorage.setItem('timerMilliseconds', milliseconds);
-    localStorage.setItem('timerRunning', isRunning);
-}
-
-// 타이머 상태를 로드하기 위한 함수
-function loadTimerState() {
-    seconds = parseInt(localStorage.getItem('timerSeconds')) || 0;
-    milliseconds = parseInt(localStorage.getItem('timerMilliseconds')) || 0;
-    const wasRunning = localStorage.getItem('timerRunning') === 'true';
-    
-    updateTimerDisplay();
-
-    if (wasRunning) {
-        startTimer(); // 타이머를 재개
-    }
 }
 
 // 과목명을 입력받고 타이머 초기화 확인
@@ -421,7 +415,6 @@ function askForSubject() {
         // 과목 이름이 입력된 경우, 타이머 기록 추가 및 초기화
         addStudyRecord(subject, seconds, new Date());
         selectDate(new Date());
-        addStudyTime(seconds);
     }
 }
 
@@ -452,34 +445,27 @@ function updateTimerDisplay() {
     document.getElementById('timer-display').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}.${String(ms).padStart(2, '0')}`; // 포맷 변경
 }
 
-// 초기화 함수 호출
-function loadInit(){
 
-    initCalendar();
-    initNotes();
-    initTimer();
-    loadStudyTime();
-    loadMemo();
+
+////여기까지 타이머
+
+
+//업데이트들
+function loadUpdate(){
+
+    updateCalendar(); //initcalendar 하면 안 됨 다른 것도 확인해보자 특히 이벤트리스너
+    updateTotalStudyTime();
     updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
-    loadTimerState();
+    loadMemo();
 
 }
 
 window.addEventListener('load', () => { //냅다 loadinit()박는 것보다 이게 안전함 
-    initCalendar();
+    initCalendar();//주의!
     initNotes();
     initTimer();
-    loadStudyTime();
-    updateStudyRecordsDisplay(); // 페이지 로드 시 공부 기록 불러오기
-    loadMemo;
-    loadTimerState();
+    updateTotalStudyTime();
+    updateStudyRecordsDisplay();
+    loadMemo();
 });
 
-// 페이지가 닫힐 때 타이머 상태를 저장하는 이벤트
-window.addEventListener('beforeunload', () => {
-    if (timerRequestId) {
-        stopTimer(); // 페이지 닫힐 때 타이머 중지
-    }
-});
-
-//업데이트토털스터디타임이 로드스터디타임임 하나없애셈

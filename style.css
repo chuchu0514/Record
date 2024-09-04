@@ -9,6 +9,10 @@ body {
     flex-direction: column; /* 플렉스 자식 세로로 row도 맘에 들긴 함 고민좀 */
 }
 
+
+
+
+
 /* h, a 스타일 */
 h1, h2, h3 {
     color: #333;
@@ -138,7 +142,7 @@ footer {
 }
 
 #calendar-body td.today {
-    background-color: #e3e7eb;
+    background-color:rgb(228, 183, 183);
     font-weight: bold;
     box-shadow: 0 0 0 2px #e0e8f0 inset; /* inset은 요소 내부에 */
 }   
@@ -156,8 +160,8 @@ footer {
     box-shadow: 0 0 0 2px #e0e8f0 inset; /* inset은 요소 내부에 */
 }
 
-#calendar-body td.today.selected:hover {
-    background-color: #45a049;
+#calendar-body td.today:hover{
+    background-color: rgb(224, 145, 145);
 }
 
 #calendar-body td.selected:hover{
@@ -165,9 +169,11 @@ footer {
 }
 
 #calendar-body td:hover {
-    background-color: #c4c1c1;
+    background-color: #c4c1c1;  
     cursor: pointer;
 }
+
+
 
 /* 캘린더 색상 지표 스타일 */
 #color-legend {
@@ -261,7 +267,7 @@ footer {
 }
 
 /* 스터디 메모 편집기 스타일 */
-.memo-editor {
+.minimemo-editor {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -274,13 +280,13 @@ footer {
     z-index: 1000; /* 다른 요소 위에 표시되도록 값이 클 수록 위레 표시*/
 }
 
-.memo-editor textarea {
+.minimemo-editor textarea {
     width: 100%;
     margin-bottom: 10px;
     resize: none;
 }
 
-.memo-editor button {
+.minimemo-editor button {
     margin-right: 10px;
 }
 
