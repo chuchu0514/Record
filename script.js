@@ -1,15 +1,6 @@
 let currentDate = new Date(); // 현재 날짜
 let selectedDate = new Date(); // 선택된 날짜
 
-// 공부 기록을 저장할 객체
-let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {}; //JSON.parse는 JSON 형식의 문자열을 JavaScript 객체로 변환하는 메서드입니다. not문자열
-
-// 타이머 변수
-let timerRequestId;
-let seconds = 0; // 타이머 초 단위
-let milliseconds = 0; // 타이머 밀리초 단위
-let lastUpdateTime = 0; // 마지막 업데이트 시간 (밀리초 단위)
-
 // 달력 기능 초기화
 function initCalendar() {
     updateCalendar();
@@ -41,7 +32,7 @@ function getBackgroundColor(totalSeconds) {//색반환
     } else if (totalSeconds > 0) {
         return '#e0f7fa'; // 연한 하늘색
     } else {
-        return '#ffffff'; // 공부 시간이 없을 때 기본 배경색
+        return ''; // 공부 시간이 없을 때 기본 배경색
     }
 }
 //호버배경색
@@ -59,7 +50,7 @@ function getBackgroundColorHover(totalSeconds) {
     } else if (totalSeconds > 0) {
         return '#b2ebf2'; 
     } else {
-        return '#ffffff'; 
+        return ''; 
     }
 }
 // 달력 업데이트 함수
@@ -172,6 +163,10 @@ function selectDate(date) {
 }
 
 ////여기까지 캘린더
+
+
+// 공부 기록을 저장할 객체
+let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {}; //JSON.parse는 JSON 형식의 문자열을 JavaScript 객체로 변환하는 메서드입니다. not문자열 그니까 로컬스트로지에 아무것도 없는 제일 처음엔 빈 객체겠지
 
 
 // 공부 기록 추가
@@ -361,6 +356,11 @@ function saveMemoToLocalStorage() {
 ////여기까지 노트
 
 
+// 타이머 변수
+let timerRequestId;
+let seconds = 0; // 타이머 초 단위
+let milliseconds = 0; // 타이머 밀리초 단위
+let lastUpdateTime = 0; // 마지막 업데이트 시간 (밀리초 단위)
 
 // 타이머 기능 초기화
 function initTimer() {
@@ -371,15 +371,15 @@ function initTimer() {
 
 // 타이머 시작
 function startTimer() {
-    if (!timerRequestId) {
-        lastUpdateTime = performance.now(); // 시작 시간 설정
-        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작
+    if (!timerRequestId) {//제일 첨엔 undefined이므로 실행됨
+        lastUpdateTime = performance.now(); // 시작 시간 설정 밀리초 단위로 시간반환 , 시작시간을 기억하는 구조
+        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작 ,프레임 단위로 함수 호출 업데이트타이머함수 안에 변수를 자동으로 줌 프레임이 그려지는 정확한 시간(timestamp)=페이지가 로드된 이후 경과된 시간 
     }
 }
 
 // 타이머 중지
 function stopTimer() {
-    cancelAnimationFrame(timerRequestId);
+    cancelAnimationFrame(timerRequestId); //저거 중지 
     timerRequestId = null;
     saveStudyTime();
 }
@@ -405,9 +405,7 @@ function askForSubject() {
         const confirmCancel = confirm('취소하시겠습니까? 과목명 입력을 원하시면 확인을 클릭하십시오.');
         if (confirmCancel) {
             resetTimer(); // 초기화 확인 요청을 다시 호출
-        } else {
-            
-        }
+        } 
     } else if (subject.trim() === '') {
         alert('과목 이름이 입력되지 않았습니다.');
         askForSubject(); // 빈 입력일 경우 다시 요청
