@@ -321,9 +321,10 @@ footer {
 }
 
 #timer-buttons {
-    margin-bottom: 3rem; /* 버튼 아래 여백 더 증가 */
+    margin-bottom: 1rem; /* 버튼 아래 여백 더 증가 */
     user-select: none;
 }
+
 
 /* 버튼 스타일 */
 button {
@@ -361,7 +362,12 @@ button:focus {
 #reset-timer { background-color: #008CBA; }
 #reset-timer:hover { background-color: #007a9e; }
 
+#set-alarm { background-color: #bff4a4;}
+#set-alarm:hover {background-color: #a4e1a4;} /*색 마음에 듦*/
 
+#cancel-alarm { background-color: #bff4a4;}
+#cancel-alarm:hover {background-color: #a4e1a4;}
+ 
 /* 개발일지의 개발일지 */
 .dailyRecord {
     background-color: gray;

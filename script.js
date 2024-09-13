@@ -367,13 +367,15 @@ function initTimer() {
     document.getElementById('start-timer').addEventListener('click', startTimer);
     document.getElementById('stop-timer').addEventListener('click', stopTimer);
     document.getElementById('reset-timer').addEventListener('click', resetTimer);
+    document.getElementById('set-alarm').addEventListener('click', setAlarm);
+    document.getElementById('cancel-alarm').addEventListener('click', cancelAlarm); // 알람 취소 버튼 이벤트 추가
 }
 
 // 타이머 시작
 function startTimer() {
     if (!timerRequestId) {//제일 첨엔 undefined이므로 실행됨
         lastUpdateTime = performance.now(); // 시작 시간 설정 밀리초 단위로 시간반환 , 시작시간을 기억하는 구조
-        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작 ,프레임 단위로 함수 호출 업데이트타이머함수 안에 변수를 자동으로 줌 프레임이 그려지는 정확한 시간(timestamp)=페이지가 로드된 이후 경과된 시간 
+        requestAnimationFrame(updateTimer); // 타이머 업데이트 시작 ,프레임 단위로 함수 호출 업데이트타이머함수 안에 변수를 자동으로 줌 프레임이 그려지는 정확한 시간(timestamp)=페이지가 로드된 이후 경과된 시간  아이디 넣어도 상관은 없음 timerRequestId
     }
 }
 
@@ -416,7 +418,7 @@ function askForSubject() {
     }
 }
 
-// 타이머 업데이트
+// 타이머 업데이트 함수에 알람 체크 추가
 function updateTimer(timestamp) {
     if (!lastUpdateTime) {
         lastUpdateTime = timestamp;
@@ -428,9 +430,15 @@ function updateTimer(timestamp) {
     while (milliseconds >= 1000) {
         milliseconds -= 1000;
         seconds++;
+        if (remainingAlarmTime !== null) {
+            remainingAlarmTime--; // 알람까지 남은 시간을 줄임
+        }
     }
 
     updateTimerDisplay();
+    updateAlarmStatus(); // 알람 상태 업데이트
+    checkAlarm(); // 알람 확인
+
     timerRequestId = requestAnimationFrame(updateTimer);
 }
 
@@ -447,6 +455,79 @@ function updateTimerDisplay() {
 
 ////여기까지 타이머
 
+let alarmTime = null; // 알람이 설정된 시간을 저장할 변수
+let remainingAlarmTime = null; // 남은 시간을 추적할 변수
+const alarmSound = new Audio('alarm-sound.mp3');
+
+// 알람 설정 함수
+function setAlarm() {
+    // 사용자에게 알람 시간을 한 번에 입력받기
+    const input = prompt('알람 시간을 입력하세요 (형식: 시 분 초):', '0 0 0');
+    if (input === null) return; // 취소 클릭 시 함수 종료
+
+    // 입력된 값을 공백으로 분리
+    const [hoursInput, minutesInput, secondsInput] = input.split(' ');
+
+    // 입력된 값을 정수로 변환
+    const hours = parseInt(hoursInput, 10) || 0;
+    const minutes = parseInt(minutesInput, 10) || 0;
+    const alarmseconds = parseInt(secondsInput, 10) || 0;
+
+    // 알람 시간을 초로 변환
+    const alarmInSeconds = (hours * 3600) + (minutes * 60) + alarmseconds;
+
+    if (alarmInSeconds === 0) {
+        alert('알람 시간을 0초로 설정할 수 없습니다. 유효한 시간을 입력하세요.');
+        return;
+    }
+
+    alarmTime = seconds + alarmInSeconds;
+    remainingAlarmTime = alarmInSeconds; // 남은 시간을 저장
+
+    document.getElementById('alarm-status').textContent = `알람 설정: ${hours}시간 ${minutes}분 ${alarmseconds}초 후`;
+    alert(`알람이 설정되었습니다. ${hours}시간 ${minutes}분 ${alarmseconds}초 후에 알람이 울립니다.`);
+}
+
+function cancelAlarm() {
+    if (alarmTime !== null) {
+        alarmTime = null;
+        document.getElementById('alarm-status').textContent = '알람이 취소되었습니다.'; // 상태 업데이트
+        alert('알람이 취소되었습니다.');
+    } else {
+        alert('설정된 알람이 없습니다.');
+    }
+}
+
+function checkAlarm() {
+    if (alarmTime !== null && seconds >= alarmTime) {
+        alarmSound.play(); // 소리 재생
+        alert('알람 시간입니다!'); // 사용자에게 알람 시간 알림
+
+        // 알람이 울리면 초기화
+        alarmTime = null;
+
+        // 알람 소리를 멈추기 위해 오디오를 중지
+        alarmSound.pause();
+        alarmSound.currentTime = 0; // 소리의 재생 위치를 처음으로 돌립니다.
+    }
+}
+
+function updateAlarmStatus() {
+    if (remainingAlarmTime !== null) {
+        if (remainingAlarmTime > 0) {
+            const hours = Math.floor(remainingAlarmTime / 3600);
+            const minutes = Math.floor((remainingAlarmTime % 3600) / 60);
+            const secs = remainingAlarmTime % 60;
+            document.getElementById('alarm-status').textContent = `알람까지 남은 시간: ${hours}시간 ${minutes}분 ${secs}초`;
+        } else {
+            document.getElementById('alarm-status').textContent = '알람 시간입니다!';
+            remainingAlarmTime = null; // 알람 시간이 도달하면 초기화
+        }
+    }
+}
+
+
+//알람
 
 //업데이트들
 function loadUpdate(){
