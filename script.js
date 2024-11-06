@@ -17,6 +17,7 @@ function goToday(){
     selectedDate = new Date(); // 선택된 날짜
     loadUpdate();
 }
+
 // 배경색 결정 함수
 function getBackgroundColor(totalSeconds) {//색반환
     const hours = totalSeconds / 3600; // 초를 시간으로 변환
@@ -70,9 +71,9 @@ function updateCalendar() {
     let date = 1;
 
     for (let i = 0; i < 6; i++) {//최대 6주를 상정
-        const row = document.createElement('tr');
+        const row = document.createElement('tr');//매 반복문마다 row는 초기화됨 요소 추가가 아니고 create이기 때문 tr태그를 row라는 변수명으로 하나 생성 하겟다는뜻
         for (let j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDay.getDay()) {
+            if (i === 0 && j < firstDay.getDay()) { //얘는 getday임 요일을 숫자로
                 row.appendChild(document.createElement('td'));
             } else if (date > lastDay.getDate()) {
                 row.appendChild(document.createElement('td'));
@@ -108,7 +109,7 @@ function updateCalendar() {
 
                     cell.addEventListener('mouseout', () => {
                         cell.style.backgroundColor = getBackgroundColor(totalSeconds);
-                    });
+                    }); //원래 배경색으로 돌아가기 위해 필요함
                 }
 
                 if (isSameDate(cellDate, selectedDate)) { //클래스 추가
@@ -117,7 +118,7 @@ function updateCalendar() {
 
                 // 메모가 있는 날짜인지 확인
                 const dateString = getDateString(cellDate);
-                if (localStorage.getItem(`memo-${dateString}`)) {//saveMemoToLocalStorage()에 정의
+                if (localStorage.getItem(`memo-${dateString}`)) {//saveMemoToLocalStorage()에 정의 memo-2024-05-14 이런식으로 저장됨
                     const checkmark = document.createElement('span');
                     checkmark.classList.add('checkmark'); //span에 체크마크 클래스
                     cell.appendChild(checkmark); // 체크 아이콘 추가
@@ -166,7 +167,7 @@ function selectDate(date) {
 
 
 // 공부 기록을 저장할 객체
-let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {}; //JSON.parse는 JSON 형식의 문자열을 JavaScript 객체로 변환하는 메서드입니다. not문자열 그니까 로컬스트로지에 아무것도 없는 제일 처음엔 빈 객체겠지
+let studyRecords = JSON.parse(localStorage.getItem('studyRecords')) || {}; //JSON.parse는 JSON 형식의 문자열을 JavaScript 객체로 변환하는 메서드입니다. not문자열 그니까 로컬스트로지에 아무것도 없는 제일 처음엔 빈 객체겠지 이 말 중요...... localStorage에 저장되는 데이터는 key와 value로 이루어져 있지만, 그 자체로는 객체가 아닙니다. 이것도 중요 겟아이템안의 저거는 키이지만 객체는 아님 키가 js에선 객체의 부품이겠지만 로컬스트로지에선 객체와 상관이 없다는 것 바로 밑 함수에서 스터디리코드를 정의함 
 
 
 // 공부 기록 추가
@@ -181,14 +182,14 @@ function addStudyRecord(subject, timeInSeconds, date = new Date()) {
     updateTotalStudyTime(); // 총 공부 시간 업데이트 추가
 }
 
-// 공부 기록 디스플레이 업데이트
-function updateStudyRecordsDisplay() {
+// 공부 기록 디스플레이 업데이트 (업데이트 캘린더와 유사 그리고 굉장히 어려운 파트)
+function updateStudyRecordsDisplay() { 
     const recordsContainer = document.getElementById('study-records');
     recordsContainer.innerHTML = '';
     const dateString = getDateString(selectedDate);
 
-    if (studyRecords[dateString]) {
-        studyRecords[dateString].forEach((record, index) => {
+    if (studyRecords[dateString]) {//날짜가 키이고 값은 배열임 
+        studyRecords[dateString].forEach((record, index) => { //이 밑에 전부 폴이치로 걸림 각 기록들을 다 보는 거임 이 날의 공부기록 디코보도록 자세한건
             const recordElement = document.createElement('div');
             recordElement.classList.add('study-record');//클래스 추가 참고 아이디는 study-records임
             recordElement.textContent = `${record.subject} - ${Math.floor(record.time / 3600)}h ${Math.floor((record.time % 3600) / 60)}m ${record.time % 60}s`; //addStudyRecord함수에 푸쉬로 변수명을 키와 값을 subject로 받음
@@ -256,7 +257,7 @@ function formatTime(totalSeconds) {
 
 
 //공부기록 메모 편집기 표시
-function miniMemoEditor(record, index) {
+function miniMemoEditor(record, index) { //매개변수를 studyRecords로 해버리면 전역변수 studyRecords를 못 씀
     const memoEditor = document.createElement('div');
     memoEditor.classList.add('minimemo-editor');
     
@@ -293,15 +294,15 @@ function saveMiniMemoForRecord(index, memo) {
     studyRecords[dateString][index].memo = memo;//minimemoeditor에서 이 함수가 쓰이는데 거기서 index를 인수로 받음
     localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
     updateStudyRecordsDisplay();  // 화면 업데이트
-    document.querySelector('.minimemo-editor').remove(); // 메모 편집기 닫기
+    document.querySelector('.minimemo-editor').remove(); // 메모 편집기 닫기 대충 저장한 다음에 메모 닫는다는 뜻
 }
 
 // 공부 기록 수정
-function editRecord(recordIndex, dateString) {
-    const newSubject = prompt('새로운 과목 이름을 입력하세요:', studyRecords[dateString][recordIndex].subject);//후자는 현재과목이 필드에 자동입력돼있음
+function editRecord(index, dateString) { //객체 접근의 순서는 항상 객체명[키][인덱스] 순서
+    const newSubject = prompt('새로운 과목 이름을 입력하세요:', studyRecords[dateString][index].subject);//후자는 현재과목이 필드에 자동입력돼있음
 
     if (newSubject !== null && newSubject.trim() !== '') {//후자는 newsubject에 입력이 됐을 때
-        studyRecords[dateString][recordIndex].subject = newSubject;
+        studyRecords[dateString][index].subject = newSubject;
         localStorage.setItem('studyRecords', JSON.stringify(studyRecords));
         updateStudyRecordsDisplay();  // 화면 업데이트
     } else if (newSubject === null) {

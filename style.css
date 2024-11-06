@@ -9,10 +9,6 @@ body {
     flex-direction: column; /* 플렉스 자식 세로로 row도 맘에 들긴 함 고민좀 */
 }
 
-
-
-
-
 /* h, a 스타일 */
 h1, h2, h3 {
     color: #333;
@@ -325,6 +321,13 @@ footer {
     user-select: none;
 }
 
+#alarm-buttons{
+    user-select: none;
+}
+
+#alarm-status{
+    user-select: none;
+}
 
 /* 버튼 스타일 */
 button {
